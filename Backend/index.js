@@ -19,7 +19,7 @@ app.get('/',function(req,res){
 
 app.post('/register',register)
 app.post('/login',login)
-app.get('/get-current-user',getCurrentUser)
+app.post('/get-current-user',getCurrentUser)
 app.post('/add-question',addQuestion)
 app.get('/all-questions',allQuestions)
 

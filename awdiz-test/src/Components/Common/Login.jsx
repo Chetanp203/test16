@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../ApiConfig';
 import { toast } from 'react-hot-toast';
@@ -7,8 +7,10 @@ import { AuthContext } from '../Context/AuthContext';
 const Login = () => {
     const {state,dispatch}=useContext(AuthContext);
     const router = useNavigate();
+    const username = state?.user?.name
     const [userData,setUserData]= useState({email:"",password:""})
 
+    console.log(state);
     const handleChange = (event)=>{
         setUserData({...userData,[event.target.name]:event.target.value})
     }
@@ -21,10 +23,10 @@ const Login = () => {
                 if(response.data.success){
                     dispatch({
                         type:'login',
-                        payload:response.data.user
+                        payload:response?.data?.user
                     })
-                    localStorage.setItem("token",JSON.stringify(response.data.token))
-                    setUserData({email:"",password:""})
+                    localStorage.setItem("token",JSON.stringify(response.data.token));
+                    setUserData({email:"",password:""});
                     router('/')
                     toast.success(response.data.message)
                 }else{
@@ -37,6 +39,12 @@ const Login = () => {
             toast.error("all fields are mandatory")
         }
     }
+
+    useEffect(()=>{
+        if(!username){
+          router("/")
+        }
+        },[username])
   return (
     <div style={{width:"100%"}}>
         <form onSubmit={handleSubmit} style={{width:"30%",margin:"auto",padding:"20px",border:"1px solid black",textAlign:"center"}}>

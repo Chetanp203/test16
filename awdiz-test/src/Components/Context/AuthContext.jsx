@@ -25,19 +25,18 @@ const AuthProvider =({children})=>{
     useEffect(()=>{
         async function getCurrentUserData(){
             let token = JSON.parse(localStorage.getItem("token"))
-            if(token){
+            console.log(token)
                 try {
                     const response = await api.post("/get-current-user",{token})
-                    if(response.data.success){
+                    if(response?.data?.success){
                         dispatch({
                             type:"login",
-                            payload:response.data.user
+                            payload:response?.data?.user
                         })
                     }
                 } catch (error) {
                     console.log(error);
                 }
-            }
         }
         getCurrentUserData();
     },[])
